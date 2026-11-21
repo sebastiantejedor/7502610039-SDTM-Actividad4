@@ -6,12 +6,14 @@ public class Investigador {
     private String nombre;
     private String correo;
     private String especialidad;
+    private Universidad universidad;
 
     public Investigador(int id, String nombre, String correo) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.especialidad = "Sin especificar";
+        this.universidad = null;
     }
 
     public int getId() {
@@ -42,6 +44,18 @@ public class Investigador {
         this.especialidad = especialidad;
     }
 
+    public Universidad getUniversidad() {
+        return universidad;
+    }
+
+    void asignarUniversidad(Universidad universidad) {
+        this.universidad = universidad;
+    }
+
+    void retirarUniversidad() {
+        this.universidad = null;
+    }
+
     @Override
     public String toString() {
         return "Investigador{" +
@@ -52,3 +66,4 @@ public class Investigador {
                 '}';
     }
 }
+
