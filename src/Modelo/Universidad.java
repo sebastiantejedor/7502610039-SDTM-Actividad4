@@ -42,6 +42,48 @@ public class Universidad {
         return Collections.unmodifiableList(investigadores);
     }
 
+
+    public boolean registrarInvestigador(Investigador investigador) {
+        if (investigador == null || investigador.getUniversidad() != null) {
+            return false;
+        }
+
+        for (Investigador existente : investigadores) {
+            if (existente.getId() == investigador.getId()) {
+                return false;
+            }
+        }
+
+        investigadores.add(investigador);
+        investigador.asignarUniversidad(this);
+
+        return true;
+    }
+
+    public Investigador buscarInvestigadorPorId(int id) {
+        for (Investigador investigador : investigadores) {
+            if (investigador.getId() == id) {
+                return investigador;
+            }
+        }
+
+        return null;
+    }
+
+    public boolean eliminarInvestigador(int id) {
+        Investigador investigador = buscarInvestigadorPorId(id);
+
+        if (investigador == null) {
+            return false;
+        }
+
+        investigadores.remove(investigador);
+        investigador.retirarUniversidad();
+
+        return true;
+    }
+
+
     @Override
     public String toString() {
         return "Universidad{" +
