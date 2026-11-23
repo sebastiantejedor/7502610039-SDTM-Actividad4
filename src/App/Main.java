@@ -2,17 +2,19 @@ package App;
 
 import Modelo.Universidad;
 import Modelo.Investigador;
-import Modelo.Proyecto;
-import Modelo.Publicacion;
-import Servicios.ServicioInvestigacion;
 import Modelo.GrupoInvestigacion;
-import Asociaciones.ParticipacionGrupo;
 import Modelo.LineaInvestigacion;
-import Asociaciones.ParticipacionProyecto;
-import Asociaciones.AutorPublicacion;
+import Modelo.Proyecto;
+import Modelo.InstitucionColaboradora;
+import Modelo.Publicacion;
 import Modelo.TrabajoFormacion;
 import Modelo.DireccionFormacion;
-import Modelo.InstitucionColaboradora;
+
+import Asociaciones.ParticipacionGrupo;
+import Asociaciones.ParticipacionProyecto;
+import Asociaciones.AutorPublicacion;
+
+import Servicios.ServicioInvestigacion;
 
 import java.time.LocalDate;
 
@@ -20,24 +22,18 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("SISTEMA DE INVESTIGACION CIENTIFICA");
-        System.out.println("Universidad de Cartagena\n");
-
+        // Creamos la universidad y el servicio que permite gestionar la información.
         Universidad universidad = new Universidad(
                 1,
                 "Universidad de Cartagena",
                 "Cartagena, Colombia"
         );
 
-        ServicioInvestigacion servicio =
-                new ServicioInvestigacion(universidad);
+        ServicioInvestigacion servicio = new ServicioInvestigacion(universidad);
 
-        System.out.println("Informacion de la universidad:");
-        System.out.println(universidad);
+        System.out.println("SISTEMA DE INVESTIGACION CIENTIFICA");
 
-        // Registro de investigadores
-        System.out.println("\nRegistro de investigadores:");
-
+        // Registramos algunos investigadores y asignamos sus especialidades.
         Investigador investigador1 = new Investigador(
                 101,
                 "Sebastian Tejedor Montiel",
@@ -53,51 +49,40 @@ public class Main {
         investigador1.actualizarEspecialidad("Inteligencia Artificial");
         investigador2.actualizarEspecialidad("Desarrollo de Software");
 
-        System.out.println("Sebastian registrado: "
-                + servicio.registrarInvestigador(investigador1));
+        servicio.registrarInvestigador(investigador1);
+        servicio.registrarInvestigador(investigador2);
 
-        System.out.println("Santiago registrado: "
-                + servicio.registrarInvestigador(investigador2));
-
-        // Consulta de investigadores
         System.out.println("\nInvestigadores registrados:");
 
         for (Investigador investigador : universidad.getInvestigadores()) {
             System.out.println(investigador);
         }
 
-
-        // Creacion de un grupo de investigacion
-        System.out.println("\nRegistro de grupo de investigacion:");
-
-        GrupoInvestigacion grupo1 = new GrupoInvestigacion(
+        // Creamos un grupo de investigación y registramos la participación de un investigador.
+        GrupoInvestigacion grupo = new GrupoInvestigacion(
                 401,
                 "Grupo de Inteligencia Artificial",
-                "Grupo dedicado a investigar soluciones basadas en inteligencia artificial."
+                "Investigacion y desarrollo de soluciones tecnologicas."
         );
 
-        System.out.println(grupo1);
-
-// Participacion de investigadores en el grupo
-        System.out.println("\nParticipacion en el grupo:");
-
-        ParticipacionGrupo participacion1 = new ParticipacionGrupo(
+        ParticipacionGrupo participacionGrupo = new ParticipacionGrupo(
                 investigador1,
-                grupo1,
-                "Investigador principal",
+                grupo,
+                "Lider de investigacion",
                 LocalDate.now(),
                 "Activo"
         );
 
-        System.out.println(participacion1);
+        System.out.println("\nGrupo de investigacion:");
+        System.out.println(grupo.getNombre());
+        System.out.println("Participacion:");
+        System.out.println(participacionGrupo);
 
-        // Creacion de lineas de investigacion
-        System.out.println("\nLineas de investigacion:");
-
+        // Agregamos dos sublíneas a una línea principal de investigación.
         LineaInvestigacion lineaPrincipal = new LineaInvestigacion(
                 501,
                 "Inteligencia Artificial",
-                "Estudio de sistemas y tecnologias inteligentes."
+                "Estudio de tecnologias inteligentes."
         );
 
         LineaInvestigacion sublinea1 = new LineaInvestigacion(
@@ -109,38 +94,20 @@ public class Main {
         LineaInvestigacion sublinea2 = new LineaInvestigacion(
                 503,
                 "Procesamiento del Lenguaje Natural",
-                "Estudio del procesamiento automatico del lenguaje."
+                "Estudio del lenguaje humano mediante sistemas inteligentes."
         );
 
-// Agregar sublineas a la linea principal
         lineaPrincipal.agregarSublinea(sublinea1);
         lineaPrincipal.agregarSublinea(sublinea2);
 
-// Mostrar la estructura de las lineas
-        System.out.println("Linea principal: " + lineaPrincipal.getNombre());
+        System.out.println("\nLineas de investigacion:");
+        System.out.println(lineaPrincipal.getNombre());
 
         for (LineaInvestigacion sublinea : lineaPrincipal.getSublineas()) {
-            System.out.println("Sublinea: " + sublinea.getNombre());
-            System.out.println("Linea padre: "
-                    + sublinea.getLineaPadre().getNombre());
+            System.out.println("- " + sublinea.getNombre());
         }
 
-
-
-        // Busqueda de un investigador
-        System.out.println("\nBusqueda de investigador:");
-
-        Investigador encontrado = servicio.buscarInvestigador(101);
-
-        if (encontrado != null) {
-            System.out.println("Investigador encontrado: " + encontrado);
-        } else {
-            System.out.println("No se encontro el investigador.");
-        }
-
-        // Registro de proyectos
-        System.out.println("\nRegistro de proyectos:");
-
+        // Registramos un proyecto de investigación.
         Proyecto proyecto1 = new Proyecto(
                 201,
                 "Inteligencia Artificial aplicada a la educacion",
@@ -150,17 +117,17 @@ public class Main {
                 "En desarrollo"
         );
 
-        System.out.println("Proyecto registrado: "
-                + servicio.registrarProyecto(proyecto1));
+        boolean proyectoRegistrado = servicio.registrarProyecto(proyecto1);
 
-        // Registro de instituciones colaboradoras
-        System.out.println("\nInstituciones colaboradoras:");
+        System.out.println("\nRegistro de proyectos:");
+        System.out.println("Proyecto registrado: " + proyectoRegistrado);
 
+        // Relacionamos el proyecto con las instituciones que colaboran en su desarrollo.
         InstitucionColaboradora institucion1 = new InstitucionColaboradora(
                 701,
                 "Universidad Nacional",
                 "Universidad",
-                "Bogota",
+                "Bogota, Colombia",
                 "contacto@unal.edu.co"
         );
 
@@ -168,166 +135,158 @@ public class Main {
                 702,
                 "Centro de Investigacion Tecnologica",
                 "Centro de investigacion",
-                "Cartagena",
-                "investigacion@centro.edu.co"
+                "Cartagena, Colombia",
+                "contacto@centroinvestigacion.edu.co"
         );
 
-// Relacionar instituciones con proyectos
         proyecto1.agregarInstitucion(institucion1);
         proyecto1.agregarInstitucion(institucion2);
 
-        System.out.println("Instituciones del proyecto:");
+        System.out.println("\nInstituciones del proyecto:");
 
         for (InstitucionColaboradora institucion : proyecto1.getInstituciones()) {
             System.out.println(institucion.getNombre());
         }
 
-// Comprobar la relacion desde la institucion
         System.out.println("\nProyectos de la institucion:");
 
         for (Proyecto proyecto : institucion1.getProyectos()) {
             System.out.println(proyecto.getTitulo());
         }
 
-
-        // Participacion de investigadores en proyectos
-        System.out.println("\nParticipacion en proyectos:");
-
-        ParticipacionProyecto participacionProyecto1 = new ParticipacionProyecto(
+        // Registramos la participación de un investigador dentro del proyecto.
+        ParticipacionProyecto participacionProyecto = new ParticipacionProyecto(
                 investigador1,
                 proyecto1,
                 "Investigador principal",
                 50.0
         );
 
-        System.out.println(participacionProyecto1);
+        System.out.println("\nParticipacion en el proyecto:");
+        System.out.println("Rol: " + participacionProyecto.getRol());
+        System.out.println("Dedicacion: "
+                + participacionProyecto.getPorcentajeDedicacion() + "%");
+        System.out.println("Dedicacion valida: "
+                + participacionProyecto.validarDedicacion());
 
-
-        // Busqueda de proyectos
-        System.out.println("\nBusqueda de proyectos:");
-
-        Proyecto proyectoEncontrado = servicio.buscarProyecto(201);
-
-        if (proyectoEncontrado != null) {
-            System.out.println(proyectoEncontrado);
-        } else {
-            System.out.println("No se encontro el proyecto.");
-        }
-
-        // Registro de publicaciones
-        System.out.println("\nRegistro de publicaciones:");
-
+        // Creamos una publicación científica y la registramos en el sistema.
         Publicacion publicacion1 = new Publicacion(
                 301,
                 "El impacto de la inteligencia artificial en la educacion",
                 "Articulo cientifico",
-                "Revista universitaria",
+                "Revista academica",
                 LocalDate.now(),
                 "10.1234/ejemplo.2026"
         );
 
-        System.out.println("Publicacion registrada: "
-                + servicio.registrarPublicacion(publicacion1));
+        boolean publicacionRegistrada = servicio.registrarPublicacion(publicacion1);
 
-        // Autoria de publicaciones
-        System.out.println("\nAutores de la publicacion:");
+        System.out.println("\nPublicaciones:");
+        System.out.println("Publicacion registrada: " + publicacionRegistrada);
 
+        // Asociamos los investigadores con la publicación y establecemos el orden de autoría.
         AutorPublicacion autor1 = new AutorPublicacion(
                 investigador1,
                 publicacion1,
                 1,
-                "Investigacion y redaccion"
+                "Autor principal"
         );
 
         AutorPublicacion autor2 = new AutorPublicacion(
                 investigador2,
                 publicacion1,
                 2,
-                "Revision y documentacion"
+                "Coautor"
         );
 
+        System.out.println("\nAutores de la publicacion:");
         System.out.println(autor1);
         System.out.println(autor2);
 
-
-        // Registro de trabajos de formacion
-        System.out.println("\nTrabajos de formacion:");
-
-        TrabajoFormacion trabajo1 = new TrabajoFormacion(
+        // Creamos un trabajo de formación y asignamos un director al investigador.
+        TrabajoFormacion trabajo = new TrabajoFormacion(
                 601,
-                "Desarrollo de un sistema inteligente",
-                "Trabajo de grado",
-                "Investigacion sobre aplicaciones de inteligencia artificial.",
+                "Desarrollo de un sistema educativo con IA",
+                "Trabajo de investigacion",
+                "Estudio de herramientas inteligentes aplicadas a la educacion.",
                 LocalDate.now(),
                 null,
                 "En desarrollo"
         );
 
-        System.out.println(trabajo1);
-
-// Direccion de trabajos de formacion
-        System.out.println("\nDireccion de formacion:");
-
-        DireccionFormacion direccion1 = new DireccionFormacion(
+        DireccionFormacion direccion = new DireccionFormacion(
                 investigador1,
                 investigador2,
-                trabajo1,
+                trabajo,
                 LocalDate.now(),
-                "Seguimiento y orientacion del proyecto."
+                "Seguimiento inicial del trabajo."
         );
 
-        System.out.println(direccion1);
+        System.out.println("\nTrabajo de formacion:");
+        System.out.println(trabajo.getTitulo());
+        System.out.println("Direccion registrada:");
+        System.out.println(direccion);
 
+        // Consultamos los registros para comprobar que se encuentren en el sistema.
+        System.out.println("\nConsultas del sistema:");
 
-        // Busqueda de publicaciones
-        System.out.println("\nBusqueda de publicaciones:");
+        Investigador investigadorEncontrado = servicio.buscarInvestigador(101);
 
-        Publicacion publicacionEncontrada =
-                servicio.buscarPublicacion(301);
+        if (investigadorEncontrado != null) {
+            System.out.println("Investigador encontrado: " + investigadorEncontrado);
+        } else {
+            System.out.println("No se encontro el investigador.");
+        }
+
+        Proyecto proyectoEncontrado = servicio.buscarProyecto(201);
+
+        if (proyectoEncontrado != null) {
+            System.out.println("Proyecto encontrado: " + proyectoEncontrado);
+        } else {
+            System.out.println("No se encontro el proyecto.");
+        }
+
+        Publicacion publicacionEncontrada = servicio.buscarPublicacion(301);
 
         if (publicacionEncontrada != null) {
-            System.out.println(publicacionEncontrada);
+            System.out.println("Publicacion encontrada: " + publicacionEncontrada);
         } else {
             System.out.println("No se encontro la publicacion.");
         }
 
-        // Prueba de registros duplicados
-        System.out.println("\nComprobacion de registros duplicados:");
-
+        // Intentamos registrar otro proyecto con un identificador que ya existe.
         Proyecto proyectoDuplicado = new Proyecto(
                 201,
                 "Proyecto duplicado",
-                "Prueba de identificador repetido.",
+                "Prueba para evitar registros repetidos.",
                 LocalDate.now(),
                 null,
                 "Pendiente"
         );
 
+        System.out.println("\nValidacion de registros:");
         System.out.println("Registro de proyecto duplicado: "
                 + servicio.registrarProyecto(proyectoDuplicado));
 
+        // Eliminamos un investigador y mostramos los que permanecen registrados.
+        System.out.println("\nInvestigadores despues de la eliminacion:");
 
-        // Eliminacion de un investigador
-        System.out.println("\nEliminacion de investigador:");
-
-        boolean eliminado = universidad.eliminarInvestigador(102);
-
-        System.out.println("Eliminacion exitosa: " + eliminado);
-
-        System.out.println("\nLista actualizada:");
+        universidad.eliminarInvestigador(102);
 
         for (Investigador investigador : universidad.getInvestigadores()) {
             System.out.println(investigador);
         }
 
-
-
-        System.out.println("\nResumen:");
-
+        // Mostramos un pequeño resumen de los datos que quedaron registrados.
+        System.out.println("\nResumen del sistema:");
         System.out.println("Universidad: " + universidad.getNombre());
-        System.out.println("Investigadores actuales: "
+        System.out.println("Total de investigadores: "
                 + universidad.getInvestigadores().size());
+        System.out.println("Proyecto consultado: "
+                + (proyectoEncontrado != null ? "Si" : "No"));
+        System.out.println("Publicacion consultada: "
+                + (publicacionEncontrada != null ? "Si" : "No"));
 
-        System.out.println("\nEjecucion del sistema finalizada.");
+        System.out.println("\nEl programa ha finalizado correctamente.");
     }
 }
