@@ -7,6 +7,7 @@ import Modelo.Publicacion;
 import Servicios.ServicioInvestigacion;
 import Modelo.GrupoInvestigacion;
 import Asociaciones.ParticipacionGrupo;
+import Modelo.LineaInvestigacion;
 
 import java.time.LocalDate;
 
@@ -84,6 +85,42 @@ public class Main {
         );
 
         System.out.println(participacion1);
+
+        // Creacion de lineas de investigacion
+        System.out.println("\nLineas de investigacion:");
+
+        LineaInvestigacion lineaPrincipal = new LineaInvestigacion(
+                501,
+                "Inteligencia Artificial",
+                "Estudio de sistemas y tecnologias inteligentes."
+        );
+
+        LineaInvestigacion sublinea1 = new LineaInvestigacion(
+                502,
+                "Aprendizaje Automatico",
+                "Investigacion sobre algoritmos de aprendizaje."
+        );
+
+        LineaInvestigacion sublinea2 = new LineaInvestigacion(
+                503,
+                "Procesamiento del Lenguaje Natural",
+                "Estudio del procesamiento automatico del lenguaje."
+        );
+
+// Agregar sublineas a la linea principal
+        lineaPrincipal.agregarSublinea(sublinea1);
+        lineaPrincipal.agregarSublinea(sublinea2);
+
+// Mostrar la estructura de las lineas
+        System.out.println("Linea principal: " + lineaPrincipal.getNombre());
+
+        for (LineaInvestigacion sublinea : lineaPrincipal.getSublineas()) {
+            System.out.println("Sublinea: " + sublinea.getNombre());
+            System.out.println("Linea padre: "
+                    + sublinea.getLineaPadre().getNombre());
+        }
+
+
 
         // Busqueda de un investigador
         System.out.println("\nBusqueda de investigador:");
