@@ -138,19 +138,6 @@ public class Main {
             System.out.println("No se encontro el investigador.");
         }
 
-        // Eliminacion de un investigador
-        System.out.println("\nEliminacion de investigador:");
-
-        boolean eliminado = universidad.eliminarInvestigador(102);
-
-        System.out.println("Eliminacion exitosa: " + eliminado);
-
-        System.out.println("\nLista actualizada:");
-
-        for (Investigador investigador : universidad.getInvestigadores()) {
-            System.out.println(investigador);
-        }
-
         // Registro de proyectos
         System.out.println("\nRegistro de proyectos:");
 
@@ -318,6 +305,22 @@ public class Main {
 
         System.out.println("Registro de proyecto duplicado: "
                 + servicio.registrarProyecto(proyectoDuplicado));
+
+
+        // Eliminacion de un investigador
+        System.out.println("\nEliminacion de investigador:");
+
+        boolean eliminado = universidad.eliminarInvestigador(102);
+
+        System.out.println("Eliminacion exitosa: " + eliminado);
+
+        System.out.println("\nLista actualizada:");
+
+        for (Investigador investigador : universidad.getInvestigadores()) {
+            System.out.println(investigador);
+        }
+
+
 
         System.out.println("\nResumen:");
 
