@@ -1,5 +1,9 @@
 package Modelo;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class InstitucionColaboradora {
 
     private int id;
@@ -7,6 +11,7 @@ public class InstitucionColaboradora {
     private String tipo;
     private String direccion;
     private String correoContacto;
+    private List<Proyecto> proyectos;
 
     public InstitucionColaboradora(int id, String nombre, String tipo,
                                    String direccion, String correoContacto) {
@@ -15,6 +20,7 @@ public class InstitucionColaboradora {
         this.tipo = tipo;
         this.direccion = direccion;
         this.correoContacto = correoContacto;
+        this.proyectos = new ArrayList<>();
     }
 
     public int getId() {
@@ -52,6 +58,18 @@ public class InstitucionColaboradora {
     public void setCorreoContacto(String correoContacto) {
         this.correoContacto = correoContacto;
     }
+
+    public List<Proyecto> getProyectos() {
+        return Collections.unmodifiableList(proyectos);
+    }
+
+    public void agregarProyecto(Proyecto proyecto) {
+        if (proyecto != null && !proyectos.contains(proyecto)) {
+            proyectos.add(proyecto);
+            proyecto.agregarInstitucion(this);
+        }
+    }
+
 
     @Override
     public String toString() {
