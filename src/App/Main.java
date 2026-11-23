@@ -10,6 +10,8 @@ import Asociaciones.ParticipacionGrupo;
 import Modelo.LineaInvestigacion;
 import Asociaciones.ParticipacionProyecto;
 import Asociaciones.AutorPublicacion;
+import Modelo.TrabajoFormacion;
+import Modelo.DireccionFormacion;
 
 import java.time.LocalDate;
 
@@ -221,6 +223,35 @@ public class Main {
 
         System.out.println(autor1);
         System.out.println(autor2);
+
+
+        // Registro de trabajos de formacion
+        System.out.println("\nTrabajos de formacion:");
+
+        TrabajoFormacion trabajo1 = new TrabajoFormacion(
+                601,
+                "Desarrollo de un sistema inteligente",
+                "Trabajo de grado",
+                "Investigacion sobre aplicaciones de inteligencia artificial.",
+                LocalDate.now(),
+                null,
+                "En desarrollo"
+        );
+
+        System.out.println(trabajo1);
+
+// Direccion de trabajos de formacion
+        System.out.println("\nDireccion de formacion:");
+
+        DireccionFormacion direccion1 = new DireccionFormacion(
+                investigador1,
+                investigador2,
+                trabajo1,
+                LocalDate.now(),
+                "Seguimiento y orientacion del proyecto."
+        );
+
+        System.out.println(direccion1);
 
 
         // Busqueda de publicaciones
