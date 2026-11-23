@@ -8,6 +8,7 @@ import Servicios.ServicioInvestigacion;
 import Modelo.GrupoInvestigacion;
 import Asociaciones.ParticipacionGrupo;
 import Modelo.LineaInvestigacion;
+import Asociaciones.ParticipacionProyecto;
 
 import java.time.LocalDate;
 
@@ -160,6 +161,19 @@ public class Main {
 
         System.out.println("Proyecto registrado: "
                 + servicio.registrarProyecto(proyecto1));
+
+        // Participacion de investigadores en proyectos
+        System.out.println("\nParticipacion en proyectos:");
+
+        ParticipacionProyecto participacionProyecto1 = new ParticipacionProyecto(
+                investigador1,
+                proyecto1,
+                "Investigador principal",
+                50.0
+        );
+
+        System.out.println(participacionProyecto1);
+
 
         // Busqueda de proyectos
         System.out.println("\nBusqueda de proyectos:");
