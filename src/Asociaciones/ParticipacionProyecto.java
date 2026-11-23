@@ -32,7 +32,7 @@ public class ParticipacionProyecto {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void modificarRol(String rol) {
         this.rol = rol;
     }
 
@@ -40,8 +40,12 @@ public class ParticipacionProyecto {
         return porcentajeDedicacion;
     }
 
-    public void setPorcentajeDedicacion(double porcentajeDedicacion) {
+    public void modificarDedicacion(double porcentajeDedicacion) {
         this.porcentajeDedicacion = porcentajeDedicacion;
+    }
+
+    public boolean validarDedicacion() {
+        return porcentajeDedicacion > 0 && porcentajeDedicacion <= 100;
     }
 
     @Override
