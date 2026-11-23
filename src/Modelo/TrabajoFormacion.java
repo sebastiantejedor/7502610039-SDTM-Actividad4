@@ -1,4 +1,4 @@
-package Asociaciones;
+package Modelo;
 
 import java.time.LocalDate;
 
