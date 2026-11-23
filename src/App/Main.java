@@ -1,12 +1,12 @@
-
 package App;
-
 
 import Modelo.Universidad;
 import Modelo.Investigador;
 import Modelo.Proyecto;
 import Modelo.Publicacion;
 import Servicios.ServicioInvestigacion;
+import Modelo.GrupoInvestigacion;
+import Asociaciones.ParticipacionGrupo;
 
 import java.time.LocalDate;
 
@@ -59,6 +59,31 @@ public class Main {
         for (Investigador investigador : universidad.getInvestigadores()) {
             System.out.println(investigador);
         }
+
+
+        // Creacion de un grupo de investigacion
+        System.out.println("\nRegistro de grupo de investigacion:");
+
+        GrupoInvestigacion grupo1 = new GrupoInvestigacion(
+                401,
+                "Grupo de Inteligencia Artificial",
+                "Grupo dedicado a investigar soluciones basadas en inteligencia artificial."
+        );
+
+        System.out.println(grupo1);
+
+// Participacion de investigadores en el grupo
+        System.out.println("\nParticipacion en el grupo:");
+
+        ParticipacionGrupo participacion1 = new ParticipacionGrupo(
+                investigador1,
+                grupo1,
+                "Investigador principal",
+                LocalDate.now(),
+                "Activo"
+        );
+
+        System.out.println(participacion1);
 
         // Busqueda de un investigador
         System.out.println("\nBusqueda de investigador:");
