@@ -1,0 +1,237 @@
+
+@startuml
+title SISTEMA DE INVESTIGACION CIENTIFICA
+
+top to bottom direction
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam linetype ortho
+skinparam shadowing false
+skinparam nodesep 45
+skinparam ranksep 55
+skinparam defaultFontName Arial
+skinparam package {
+  BackgroundColor #F5F7FA
+  BorderColor #65758B
+}
+skinparam class {
+  BackgroundColor White
+  BorderColor #526579
+  ArrowColor #526579
+}
+skinparam interface {
+  BackgroundColor #EAF2FF
+  BorderColor #4776B8
+}
+
+package "1. Gestion institucional" {
+
+  class Universidad {
+    - id: int
+    - nombre: String
+    - direccion: String
+    + Universidad(id: int, nombre: String, direccion: String)
+    + getNombre(): String
+    + getDireccion(): String
+  }
+}
+
+package "2. Comunidad investigadora" {
+
+  together {
+    class Investigador {
+      - id: int
+      - nombre: String
+      - correo: String
+      - especialidad: String
+      + Investigador(id: int, nombre: String, correo: String)
+      + getNombre(): String
+      + getCorreo(): String
+      + actualizarEspecialidad(especialidad: String): void
+      + consultarProyectos(): List<Proyecto>
+      + consultarPublicaciones(): List<Publicacion>
+    }
+
+    class GrupoInvestigacion {
+      - id: int
+      - nombre: String
+      - descripcion: String
+      - fechaCreacion: LocalDate
+      + GrupoInvestigacion(id: int, nombre: String)
+      + getNombre(): String
+      + setDescripcion(descripcion: String): void
+      + consultarIntegrantes(): List<Investigador>
+    }
+
+    class LineaInvestigacion {
+      - id: int
+      - nombre: String
+      - descripcion: String
+      + LineaInvestigacion(id: int, nombre: String)
+      + getNombre(): String
+      + setDescripcion(descripcion: String): void
+      + agregarSublinea(sublinea: LineaInvestigacion): void
+      + consultarSublineas(): List<LineaInvestigacion>
+    }
+  }
+
+  class ParticipacionGrupo {
+    - rol: String
+    - fechaIngreso: LocalDate
+    - estado: String
+    + ParticipacionGrupo(rol: String, fechaIngreso: LocalDate, estado: String)
+    + getRol(): String
+    + cambiarRol(rol: String): void
+    + actualizarEstado(estado: String): void
+    + consultarAntiguedad(): Period
+  }
+
+  Investigador "1" -- "0..*" ParticipacionGrupo : participa
+  GrupoInvestigacion "1" -- "0..*" ParticipacionGrupo : incluye
+
+  LineaInvestigacion "0..1" -- "0..*" LineaInvestigacion : sublineas
+
+}
+
+package "3. Gestion de proyectos" {
+
+  together {
+    class Proyecto {
+      - id: int
+      - nombre: String
+      - descripcion: String
+      - fechaInicio: LocalDate
+      - fechaFin: LocalDate
+      - estado: String
+      + Proyecto(id: int, nombre: String, fechaInicio: LocalDate)
+      + getNombre(): String
+      + cambiarEstado(estado: String): void
+      + modificarFechaFin(fecha: LocalDate): void
+      + calcularDuracion(): Period
+      + consultarParticipantes(): List<Investigador>
+    }
+
+    class InstitucionColaboradora {
+      - id: int
+      - nombre: String
+      - pais: String
+      - tipo: String
+      + InstitucionColaboradora(id: int, nombre: String)
+      + getNombre(): String
+      + actualizarPais(pais: String): void
+      + actualizarTipo(tipo: String): void
+    }
+  }
+
+  class ParticipacionProyecto {
+    - rol: String
+    - porcentajeDedicacion: double
+    + ParticipacionProyecto(rol: String, porcentaje: double)
+    + getRol(): String
+    + modificarRol(rol: String): void
+    + modificarDedicacion(porcentaje: double): void
+    + validarDedicacion(): boolean
+  }
+
+  Investigador "1" -- "0..*" ParticipacionProyecto : participa
+  Proyecto "1" -- "1..*" ParticipacionProyecto : registra
+  Proyecto "0..*" -- "0..*" InstitucionColaboradora : colaboracion
+
+}
+
+package "4. Publicaciones y autoria" {
+
+  class Publicacion {
+    - id: int
+    - titulo: String
+    - fechaPublicacion: LocalDate
+    - tipo: String
+    - doi: String
+    + Publicacion(id: int, titulo: String)
+    + getTitulo(): String
+    + modificarTitulo(titulo: String): void
+    + consultarAutores(): List<Investigador>
+  }
+
+  class AutorPublicacion {
+    - ordenAutoria: int
+    - tipoContribucion: String
+    + AutorPublicacion(orden: int, contribucion: String)
+    + getOrdenAutoria(): int
+    + modificarOrden(orden: int): void
+    + modificarContribucion(tipo: String): void
+  }
+
+  Investigador "1" -- "0..*" AutorPublicacion : autoria
+  Publicacion "1" -- "1..*" AutorPublicacion : tiene autores
+
+}
+
+package "5. Formacion investigativa" {
+
+  class TrabajoFormacion {
+    - id: int
+    - titulo: String
+    - descripcion: String
+    - fechaInicio: LocalDate
+    - estado: String
+    + TrabajoFormacion(id: int, titulo: String)
+    + getTitulo(): String
+    + modificarDescripcion(descripcion: String): void
+    + actualizarEstado(estado: String): void
+    + consultarDirecciones(): List<DireccionFormacion>
+  }
+
+  class DireccionFormacion {
+    - fechaInicio: LocalDate
+    - observaciones: String
+    + DireccionFormacion(fechaInicio: LocalDate)
+    + registrarObservacion(texto: String): void
+    + consultarDirector(): Investigador
+    + consultarInvestigadorDirigido(): Investigador
+  }
+
+  TrabajoFormacion "1" -- "0..*" DireccionFormacion : contiene
+  Investigador "1" -- "0..*" DireccionFormacion : director
+  Investigador "1" -- "0..*" DireccionFormacion : dirigido
+
+}
+
+Universidad "1" -- "0..*" Investigador : registra
+Universidad "1" -- "0..*" GrupoInvestigacion : administra
+Universidad "1" -- "0..*" LineaInvestigacion : administra
+Universidad "1" -- "0..*" Proyecto : administra
+Universidad "1" -- "0..*" Publicacion : registra
+Universidad "1" -- "0..*" InstitucionColaboradora : registra
+
+package "6. Servicios del sistema" {
+
+  interface IGestionInvestigacion {
+    + registrarInvestigador(i: Investigador): void
+    + registrarProyecto(p: Proyecto): void
+    + registrarPublicacion(p: Publicacion): void
+    + consultarInvestigadores(): List<Investigador>
+    + consultarProyectos(): List<Proyecto>
+  }
+
+  class ServicioInvestigacion {
+    - investigadores: List<Investigador>
+    - proyectos: List<Proyecto>
+    - publicaciones: List<Publicacion>
+    + ServicioInvestigacion()
+    + registrarInvestigador(i: Investigador): void
+    + registrarProyecto(p: Proyecto): void
+    + registrarPublicacion(p: Publicacion): void
+    + consultarInvestigadores(): List<Investigador>
+    + consultarProyectos(): List<Proyecto>
+  }
+
+  ServicioInvestigacion ..|> IGestionInvestigacion
+
+  ServicioInvestigacion ..> Investigador : utiliza
+  ServicioInvestigacion ..> Proyecto : utiliza
+  ServicioInvestigacion ..> Publicacion : utiliza
+
+}
+@enduml
