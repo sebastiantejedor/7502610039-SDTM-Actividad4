@@ -27,17 +27,16 @@ public class AutorPublicacion {
     public Publicacion getPublicacion() {
         return publicacion;
     }
-
-    public int getOrdenAutor() {
+    public int getOrdenAutoria() {
         return ordenAutor;
     }
 
-    public void setOrdenAutor(int ordenAutor) {
+    public void modificarOrden(int ordenAutor) {
         this.ordenAutor = ordenAutor;
     }
 
-    public String getTipoContribucion() {
-        return tipoContribucion;
+    public void modificarContribucion(String tipo) {
+        this.tipoContribucion = tipo;
     }
 
     public void setTipoContribucion(String tipoContribucion) {
