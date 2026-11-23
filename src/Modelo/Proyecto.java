@@ -1,5 +1,8 @@
 package Modelo;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.time.LocalDate;
 
 public class Proyecto {
@@ -10,6 +13,7 @@ public class Proyecto {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private String estado;
+    private List<InstitucionColaboradora> instituciones;
 
     public Proyecto(int id, String titulo, String descripcion,
                     LocalDate fechaInicio, LocalDate fechaFin,
@@ -21,6 +25,7 @@ public class Proyecto {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.estado = estado;
+        this.instituciones = new ArrayList<>();
     }
 
     public int getId() {
@@ -30,6 +35,18 @@ public class Proyecto {
     public String getTitulo() {
         return titulo;
     }
+
+    public List<InstitucionColaboradora> getInstituciones() {
+        return Collections.unmodifiableList(instituciones);
+    }
+
+    public void agregarInstitucion(InstitucionColaboradora institucion) {
+        if (institucion != null && !instituciones.contains(institucion)) {
+            instituciones.add(institucion);
+            institucion.agregarProyecto(this);
+        }
+    }
+
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;

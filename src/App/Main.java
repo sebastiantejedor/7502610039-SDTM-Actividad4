@@ -12,6 +12,7 @@ import Asociaciones.ParticipacionProyecto;
 import Asociaciones.AutorPublicacion;
 import Modelo.TrabajoFormacion;
 import Modelo.DireccionFormacion;
+import Modelo.InstitucionColaboradora;
 
 import java.time.LocalDate;
 
@@ -164,6 +165,43 @@ public class Main {
 
         System.out.println("Proyecto registrado: "
                 + servicio.registrarProyecto(proyecto1));
+
+        // Registro de instituciones colaboradoras
+        System.out.println("\nInstituciones colaboradoras:");
+
+        InstitucionColaboradora institucion1 = new InstitucionColaboradora(
+                701,
+                "Universidad Nacional",
+                "Universidad",
+                "Bogota",
+                "contacto@unal.edu.co"
+        );
+
+        InstitucionColaboradora institucion2 = new InstitucionColaboradora(
+                702,
+                "Centro de Investigacion Tecnologica",
+                "Centro de investigacion",
+                "Cartagena",
+                "investigacion@centro.edu.co"
+        );
+
+// Relacionar instituciones con proyectos
+        proyecto1.agregarInstitucion(institucion1);
+        proyecto1.agregarInstitucion(institucion2);
+
+        System.out.println("Instituciones del proyecto:");
+
+        for (InstitucionColaboradora institucion : proyecto1.getInstituciones()) {
+            System.out.println(institucion.getNombre());
+        }
+
+// Comprobar la relacion desde la institucion
+        System.out.println("\nProyectos de la institucion:");
+
+        for (Proyecto proyecto : institucion1.getProyectos()) {
+            System.out.println(proyecto.getTitulo());
+        }
+
 
         // Participacion de investigadores en proyectos
         System.out.println("\nParticipacion en proyectos:");
