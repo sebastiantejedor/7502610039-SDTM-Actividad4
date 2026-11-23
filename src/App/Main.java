@@ -9,6 +9,7 @@ import Modelo.GrupoInvestigacion;
 import Asociaciones.ParticipacionGrupo;
 import Modelo.LineaInvestigacion;
 import Asociaciones.ParticipacionProyecto;
+import Asociaciones.AutorPublicacion;
 
 import java.time.LocalDate;
 
@@ -200,6 +201,27 @@ public class Main {
 
         System.out.println("Publicacion registrada: "
                 + servicio.registrarPublicacion(publicacion1));
+
+        // Autoria de publicaciones
+        System.out.println("\nAutores de la publicacion:");
+
+        AutorPublicacion autor1 = new AutorPublicacion(
+                investigador1,
+                publicacion1,
+                1,
+                "Investigacion y redaccion"
+        );
+
+        AutorPublicacion autor2 = new AutorPublicacion(
+                investigador2,
+                publicacion1,
+                2,
+                "Revision y documentacion"
+        );
+
+        System.out.println(autor1);
+        System.out.println(autor2);
+
 
         // Busqueda de publicaciones
         System.out.println("\nBusqueda de publicaciones:");
